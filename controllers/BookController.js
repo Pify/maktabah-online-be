@@ -1,0 +1,121 @@
+const { validationResult } = require("express-validator");
+const BookService = require('../services/BookService');
+
+class BookController {
+    static async create(req, res, next) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const {
+            title, author, yearPublished,
+            publisher, type, dateAdded,
+            source, isOld, shelfCategory
+        } = req.body;
+
+        try {
+            const book = await BookService.create({
+                title,
+                author,
+                yearPublished,
+                publisher,
+                type,
+                dateAdded,
+                source,
+                isOld,
+                shelfCategory,
+            });
+
+            res.status(201).json({
+                message: "Book entry created successfully",
+                book
+            });
+        } catch (error) {
+            console.error("BookController - create: ", error);
+            next(error);
+        }
+    }
+
+    static async get(req, res, next) {
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+
+            if (req.query.id) {
+                const book = await BookService.findById(req.query.id);
+                if (!book) return res.status(404).json({ message: "Book not found" });
+                return res.json(book);
+            }
+
+            const { rows,
+                totalItems,
+                totalPages, } = await BookService.findAll(page, limit);
+
+            res.json({
+                books: rows,
+                page,
+                limit,
+                totalItems,
+                totalPages
+            });
+        } catch (error) {
+            console.error("BookController - get: ", error);
+            error.statusCode = 400;
+            error.message = "Error retrieving book entries";
+            next(error);
+        }
+    }
+
+    static async update(req, res, next) {
+        const { id } = req.params;
+        const {
+            title, author, yearPublished,
+            publisher, type, dateAdded,
+            source, isOld, shelfCategory
+        } = req.body;
+
+        try {
+            const updatedBook = await BookService.update(id, {
+                title,
+                author,
+                yearPublished,
+                publisher,
+                type,
+                dateAdded,
+                source,
+                isOld,
+                shelfCategory
+            });
+
+            if (!updatedBook) return res.status(404).json({ message: "Book not found" });
+
+            res.json({
+                message: "Book entry updated successfully",
+                book: updatedBook
+            });
+        } catch (error) {
+            console.error("BookController - update: ", error);
+            next(error);
+        }
+    }
+
+    static async delete(req, res, next) {
+        const { id } = req.params;
+
+        try {
+            const deletedBook = await BookService.delete(id);
+            if (!deletedBook) return res.status(404).json({ message: "Book not found" });
+
+            res.json({
+                message: "Book entry deleted successfully",
+                book: deletedBook
+            });
+        } catch (error) {
+            console.error("BookController - delete: ", error);
+            next(error);
+        }
+    }
+}
+
+module.exports = BookController;

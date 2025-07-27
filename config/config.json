@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "bookkeeper",
+    "password": "xxx",
+    "database": "library_db",
+    "host": "127.0.0.1",
+    "port": 3244,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "bookkeeper",
+    "password": "xxx",
+    "database": "library_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "bookkeeper",
+    "password": "xxx",
+    "database": "library_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
