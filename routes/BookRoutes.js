@@ -36,7 +36,7 @@ const bookValidationRules = [
 
 // Create a new book entry
 router.post(
-    '/books',
+    '/',
     authMiddleware,
     bookValidationRules,
     BookController.create
@@ -44,14 +44,14 @@ router.post(
 
 // Get all books or a specific book by ID
 router.get(
-    '/books',
+    '/',
     authMiddleware,
     BookController.get
 );
 
 // Update a book entry by ID
 router.put(
-    '/books/:id',
+    '/:id',
     authMiddleware,
     bookValidationRules,
     BookController.update
@@ -59,7 +59,7 @@ router.put(
 
 // Delete a book entry by ID
 router.delete(
-    '/books/:id',
+    '/:id',
     authMiddleware,
     BookController.delete
 );

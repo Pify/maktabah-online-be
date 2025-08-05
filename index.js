@@ -18,7 +18,7 @@ app.use(cors({
 
 // Routes
 app.use('/auth', authRoutes);
-app.use('/book', bookRoutes);
+app.use('/books', bookRoutes);
 
 // 404 fallback
 app.use((_, res) => {
