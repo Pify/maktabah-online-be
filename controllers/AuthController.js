@@ -46,7 +46,7 @@ class AuthController {
                 return res.status(400).json({ message: 'Invalid credentials' });
             }
 
-            const token = await UserService.generateAuthToken(user);
+            const token = await UserService.generateJWT(user);
             res.json({
                 message: "Login successful",
                 token,
