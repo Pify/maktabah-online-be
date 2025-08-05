@@ -1,17 +1,18 @@
 const { Book } = require('../models');
 
 class BookService {
-    static async create(
-        title,
-        author,
-        yearPublished,
-        publisher,
-        type,
-        dateAdded,
-        source,
-        isOld,
-        shelfCategory) {
-        const isBorrowed = false;
+    static async create(bookData) {
+        const {
+            title,
+            author,
+            yearPublished,
+            publisher,
+            type,
+            dateAdded,
+            source,
+            isOld,
+            shelfCategory
+        } = bookData;
 
         const book = await Book.create({
             title,
@@ -23,7 +24,7 @@ class BookService {
             source,
             isOld,
             shelfCategory,
-            isBorrowed
+            isBorrowed: false
         });
 
         return book;
@@ -32,12 +33,12 @@ class BookService {
     static async findAll(page = 1, limit = 10) {
         const offset = (page - 1) * limit;
 
-        const {rows: books, count: totalItems} = await Book.findAndCountAll({
+        const { rows: books, count: totalItems } = await Book.findAndCountAll({
             limit,
             offset,
             order: [['createdAt', 'DESC']]
         });
-        
+
         const totalPages = Math.ceil(totalItems / limit);
 
         return {
@@ -50,7 +51,7 @@ class BookService {
     }
 
     static async findById(id) {
-        return Book.findById(id);
+        return Book.findByPk(id);
     }
 
     static async update(id, updatedData) {

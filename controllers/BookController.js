@@ -8,24 +8,10 @@ class BookController {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const {
-            title, author, yearPublished,
-            publisher, type, dateAdded,
-            source, isOld, shelfCategory
-        } = req.body;
+        const data = req.body;
 
         try {
-            const book = await BookService.create({
-                title,
-                author,
-                yearPublished,
-                publisher,
-                type,
-                dateAdded,
-                source,
-                isOld,
-                shelfCategory,
-            });
+            const book = await BookService.create(data);
 
             res.status(201).json({
                 message: "Book entry created successfully",
@@ -48,16 +34,20 @@ class BookController {
                 return res.json(book);
             }
 
-            const { rows,
+            const { books,
                 totalItems,
                 totalPages, } = await BookService.findAll(page, limit);
 
-            res.json({
-                books: rows,
-                page,
-                limit,
-                totalItems,
-                totalPages
+            return res.json({
+                data: books,
+                meta: {
+                    page,
+                    limit,
+                    totalItems,
+                    totalPages,
+                    hasNextPage: page < totalPages,
+                    hasPrevPage: page > 1,
+                }
             });
         } catch (error) {
             console.error("BookController - get: ", error);
