@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const { BorrowRecord, Book, User } = require('../models');
+const { BorrowRecord, Book } = require('../models');
 
 class BorrowRecordService {
     static async create({

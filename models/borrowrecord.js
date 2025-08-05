@@ -1,6 +1,7 @@
 'use strict';
 const {
-  Model
+  Model,
+  Sequelize
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class BorrowRecord extends Model {
@@ -18,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   BorrowRecord.init({
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.literal('uuid_generate_v4()'),
+      defaultValue: Sequelize.literal('uuid_generate_v4()'),
       primaryKey: true
     },
     bookId: {
