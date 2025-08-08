@@ -53,8 +53,23 @@ class BorrowRecordService {
         return await BorrowRecord.findByPk(id, { include: [Book] });
     }
 
-    static async findAll() {
-        return await BorrowRecord.findAll({ include: [Book] });
+    static async findAll({page = 1, limit = 10}) {
+        const offset = (page - 1) * limit;
+
+        const result = await BorrowRecord.findAndCountAll({
+            include: [Book],
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']]
+        });
+
+        return {
+            records: result.rows,
+            totalRecords: result.count,
+            totalPages: Math.ceil(result.count / limit),
+            currentPage: page,
+            limit
+        };
     }
 
     static async delete(id) {

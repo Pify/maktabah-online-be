@@ -53,15 +53,21 @@ const recordValidationRules = [
     })
 ];
 
+router.get(
+    '/',
+    authMiddleware,
+    BorrowRecordController.get
+);
+
 router.post(
-    '/borrow-records',
+    '/',
     authMiddleware,
     recordValidationRules,
     BorrowRecordController.create
 );
 
 router.put(
-    '/borrow-records/:borrowRecordId/return',
+    '/:borrowRecordId/return',
     authMiddleware,
     check('returnDate').optional().isISO8601().toDate().withMessage('Return date must be a valid date'),
     BorrowRecordController.returnBook

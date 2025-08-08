@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const BorrowRecordService = require('../services/BorrowRecordService');
 
 class BorrowRecordController {
@@ -52,9 +53,12 @@ class BorrowRecordController {
         }
     }
 
-    static async findAll(req, res, next) {
+    static async get(req, res, next) {
         try {
-            const records = await BorrowRecordService.findAll();
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+
+            const records = await BorrowRecordService.findAll({page, limit});
             res.json(records);
         } catch (err) {
             next(err);

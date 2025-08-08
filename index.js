@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoutes = require('./routes/AuthRoutes');
 const bookRoutes = require('./routes/BookRoutes');
+const borrowRecordRoutes = require('./routes/BorrowRecordRoutes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const errorHandler = require('./errorHandler');
@@ -19,6 +20,7 @@ app.use(cors({
 // Routes
 app.use('/auth', authRoutes);
 app.use('/books', bookRoutes);
+app.use('/borrow-records', borrowRecordRoutes);
 
 // 404 fallback
 app.use((_, res) => {
